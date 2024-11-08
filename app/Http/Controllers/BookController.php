@@ -6,18 +6,41 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Storage;
 
 class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+        $catId = $request->input('catId');
+
         $books = DB::table('books')
-            ->join('categories', 'books.category_id', '=', 'category_id')
+            ->join('categories', 'books.category_id', '=', 'categories.id')
             ->select('books.*', 'categories.name as category_name')
+            ->distinct()
+
+            // Apply search filter if provided
+            ->when($search, function ($query, $search) {
+                if ($search) {
+                    $query->where(function($query) use ($search) {
+                        $query->where('books.title', 'like', "%{$search}%")
+                            ->orWhere('books.author', 'like', "%{$search}%")
+                            ->orWhere('books.isbn', 'like', "%{$search}%");
+                    });
+                }
+            })
+
+            // Apply category filter if catId is provided
+            ->when($catId, function ($query, $catId) {
+                if ($catId) {
+                    $query->where('books.category_id', '=', $catId);
+                }
+            })
+
             ->get();
 
         $categories = Category::all();
@@ -41,6 +64,7 @@ class BookController extends Controller
     {
         $request->validate([
             'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'isbn' => 'required|string|size:13|unique:books,isbn',
             'number_of_pages' => 'required|integer|min:1',
@@ -49,7 +73,7 @@ class BookController extends Controller
             'category_id' => 'required|integer|exists:categories,id'
         ]);
 
-        $bookData = $request->only(['title', 'description', 'isbn', 'number_of_pages', 'publication_date', 'category_id']);
+        $bookData = $request->only(['title', 'author', 'description', 'isbn', 'number_of_pages', 'publication_date', 'category_id']);
 
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image');
@@ -64,19 +88,14 @@ class BookController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(string $id)
     {
-        //
+        $book = Book::findOrFail($id);
+        $categories = Category::all();
+
+        return view('books.edit', compact('book', 'categories'));
     }
 
     /**
@@ -84,7 +103,30 @@ class BookController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $book = Book::findOrFail($id);
+        
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'author' => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'isbn' => 'required|string|size:13|unique:books,isbn,' . $book->id,
+            'number_of_pages' => 'required|integer|min:1',
+            'cover_image' => 'nullable|image|max:2048',
+            'publication_date' => 'required|date|before_or_equal:today',
+            'category_id' => 'required|integer|exists:categories,id'
+        ]);
+
+
+        if ($request->hasFile('cover_image')) {
+            $file = $request->file('cover_image');
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $path = $file->storeAs('covers', $filename, 'public');
+            $book->cover_image = $filename;
+        }
+
+        $book->update($request->except('cover_image'));
+
+        return redirect()->route('books.index')->with('success', 'Book updated successfully.');
     }
 
     /**
@@ -92,6 +134,14 @@ class BookController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $book = Book::findOrFail($id);
+
+        if ($book->cover_image) {
+            Storage::disk('public')->delete('covers/' . $book->cover_image);
+        }
+
+        $book->delete();
+
+        return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
     }
 }
