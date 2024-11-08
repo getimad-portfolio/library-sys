@@ -22,10 +22,10 @@
                         </x-slot>
                         
                         <x-slot name="slot">
-                            <x-nav-link :href="route('members')" :active="request()->routeIs('members')">
+                            <x-nav-link :href="route('members.index')" :active="request()->routeIs('members.*')">
                                 {{ __('Members')}}
                             </x-nav-link>
-                            <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.index')">
+                            <x-nav-link :href="route('books.index')" :active="request()->routeIs('books.*')">
                                 {{ __('Books')}}
                             </x-nav-link>
                             <x-nav-link :href="route('borrows')" :active="request()->routeIs('borrows')">

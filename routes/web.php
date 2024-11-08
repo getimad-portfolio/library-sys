@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -15,9 +16,7 @@ Route::get('/dashboard', function () {
 
 // General Routes for all type of users
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/members', function () {
-        return view('members');
-    })->name('members');
+    Route::get('/members', [MemberController::class, 'index'])->name('members.index');
     
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
