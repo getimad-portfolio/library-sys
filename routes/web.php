@@ -17,6 +17,12 @@ Route::get('/dashboard', function () {
 // General Routes for all type of users
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/members', [MemberController::class, 'index'])->name('members.index');
+    Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
+    Route::post('/members', [MemberController::class, 'store'])->name('members.store');
+    Route::get('/members/{id}/edit', [MemberController::class, 'edit'])->name('members.edit');
+    Route::put('/members/{id}', [MemberController::class, 'update'])->name('members.update');
+    Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('members.destroy');
+
     
     Route::get('/books', [BookController::class, 'index'])->name('books.index');
     Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
