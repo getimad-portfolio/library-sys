@@ -2,7 +2,6 @@
 
 namespace App\View\Components;
 
-use App\Models\Category;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Storage;

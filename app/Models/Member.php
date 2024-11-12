@@ -22,9 +22,8 @@ class Member extends Model
         return $this->belongsToMany(User::class, 'user_member', 'member_id', 'user_id');
     }
 
-    public function borrowedBooks() {
-        return $this->belongsToMany(Book::class, 'borrows')
-            ->withPivot('borrowed_at', 'due_date', 'returned_at')
-            ->withTimestamps();
+    public function borrows()
+    {
+        return $this->hasMany(Borrow::class);
     }
 }

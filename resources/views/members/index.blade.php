@@ -9,7 +9,6 @@
         <div>
             <form action="{{ route('members.index') }}" method="GET" class="flex gap-2 mb-4">
                 <select name="sort" id="sort" class="outline-none rounded-md border-none w-44" onchange="this.form.submit()">
-
                     <option value="asc" {{ request('sort') == 'asc' ? 'selected' : ' ' }}>Ascending</option>
                     <option value="desc" {{ request('sort') == 'desc' ? 'selected' : ' ' }}>Descending</option>
                 </select>

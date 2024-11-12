@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\MemberController;
 use Illuminate\Support\Facades\Route;
 
@@ -30,10 +31,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
     Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
     Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
-    
-    Route::get('/borrows', function () {
-        return view('borrows');
-    })->name('borrows');
+
+    Route::get('/borrows', [BorrowController::class, 'index'])->name('borrows.index');
+    Route::get('/borrows/create', [BorrowController::class, 'create'])->name('borrows.create');
+    Route::post('/borrows', [BorrowController::class, 'store'])->name('borrows.store');
+    Route::put('/borrows/{id}', [BorrowController::class, 'update'])->name('borrows.update');
+
 });
 
 Route::middleware('auth')->group(function () {
