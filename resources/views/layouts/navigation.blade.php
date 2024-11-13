@@ -1,3 +1,8 @@
+@php
+    use App\Enums\UserRole;
+@endphp
+
+
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -33,6 +38,12 @@
                             </x-nav-link>
                         </x-slot>
                     </x-sub-nav-group>
+
+                    @if (auth()->check() && auth()->user()->role->value === UserRole::ADMIN->value)
+                        <x-nav-link :href="route('logs.index')" :active="request()->routeIs('logs.*')">
+                            {{ __('Logs & Activities') }}
+                        </x-nav-link>
+                    @endauth
                 </div>
             </div>
 

@@ -1,9 +1,11 @@
 <?php
 
+use App\Enums\UserRole;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -16,7 +18,7 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 // General Routes for all type of users
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LIBRARIAN->value])->group(function () {
     Route::get('/members', [MemberController::class, 'index'])->name('members.index');
     Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
     Route::post('/members', [MemberController::class, 'store'])->name('members.store');
@@ -36,10 +38,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/borrows/create', [BorrowController::class, 'create'])->name('borrows.create');
     Route::post('/borrows', [BorrowController::class, 'store'])->name('borrows.store');
     Route::put('/borrows/{id}', [BorrowController::class, 'update'])->name('borrows.update');
-
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'role:' . UserRole::ADMIN->value)->group(function () {
+    Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+});
+
+Route::middleware(['auth', 'role:' . UserRole::LIBRARIAN->value . ',' . UserRole::ADMIN->value])->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
