@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Borrow;
+use App\Models\Member;
+use App\Models\Book;
 
 class BorrowController extends Controller
 {
@@ -43,7 +45,10 @@ class BorrowController extends Controller
      */
     public function create()
     {
-        //
+        $members = Member::all();
+        $books = Book::all();
+
+        return view('borrows.create', compact('members', 'books'));
     }
 
     /**
@@ -51,7 +56,16 @@ class BorrowController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validationData = $request->validate([
+            'member_id' => 'required|exists:members,id',        // Ensures the member exists in the members table
+            'book_id' => 'required|exists:books,id',            // Ensures the book exists in the books table
+            'borrowed_at' => 'required|date|before_or_equal:today', // Ensures it's a valid date not in the future
+            'due_date' => 'required|date|after:borrow_date',    // Ensures it's a valid date and after the borrow_date
+        ]);
+
+        Borrow::create($validationData);
+
+        return redirect()->route('borrows.index')->with('success', 'Borrow created successfully.');
     }
 
     /**
@@ -65,7 +79,11 @@ class BorrowController extends Controller
 
         $borrow = Borrow::findOrFail($id);
 
-        $borrow->update(['status' => $request->status]);
+        if ($request->status == 'returned') {
+            $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
+        } else {
+            $borrow->update(['status' => $request->status, 'returned_at' => null]);
+        }
 
         return redirect()->route('borrows.index')->with('success', 'Borrow updated successfully.');
     }

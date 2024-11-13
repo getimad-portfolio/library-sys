@@ -18,6 +18,12 @@ class Borrow extends Model
         'book_id'
     ];
 
+    protected $casts = [
+        'borrowed_at' => 'datetime',
+        'due_date' => 'datetime',
+        'returned_at' => 'datetime',
+    ];
+
     public function member()
     {
         return $this->belongsTo(Member::class);
