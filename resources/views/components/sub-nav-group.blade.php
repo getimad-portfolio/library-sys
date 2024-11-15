@@ -1,5 +1,5 @@
-<div class="">
-    <div class="text-xl font-bold ml-3 mb-3">
+<div>
+    <div class="text-xl font-bold ml-3 mb-3 text-gray-700">
         {{ $header }}
     </div>
 

@@ -6,7 +6,7 @@
             </svg>
         </span>
         <span class="w-1/6 px-2">{{ $member->cnie }}</span>
-        <span class="w-1/4 font-semibold px-2">{{ $member->full_name }}</span>
+        <span class="w-1/4 font-semibold px-2 capitalize">{{ $member->full_name }}</span>
         <span class="w-1/3 px-2">{{ $member->email }}</span>
         <span class="w-1/5 px-2">{{ $member->phone_number }}</span>
     </a>
