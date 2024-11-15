@@ -20,8 +20,9 @@ class Member extends Model implements Auditable
         'user_id'
     ];
 
-    public function user() {
-        return $this->belongsToMany(User::class, 'user_member', 'member_id', 'user_id');
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function borrows()

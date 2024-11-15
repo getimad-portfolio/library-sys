@@ -46,8 +46,8 @@ class User extends Authenticatable
         'role' => UserRole::class
     ];
 
-    public function managedMembers() {
-        return $this->belongsToMany(Member::class, 'user_member', 'user_id', 'member_id');
+    public function members() {
+        return $this->hasMany(Member::class);
     }
 
     public function hasRole(UserRole $role): bool {

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Borrow;
 use App\Models\Member;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
@@ -73,7 +74,10 @@ class MemberController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $member = Member::with('user')->findOrFail($id);
+        $borrows = Borrow::where('member_id', '=', $id)->get();
+
+        return view('members.show', compact('member',  'borrows'));
     }
 
     /**

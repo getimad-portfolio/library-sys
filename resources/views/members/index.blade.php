@@ -25,7 +25,7 @@
 
         <div class="flex flex-col gap-2">
             @foreach ($members as $member)
-                <x-member-item fullName="{{ $member->full_name }}" email="{{ $member->email }}" cnie="{{ $member->cnie }}" phoneNumber="{{ $member->phone_number }}" memberId="{{ $member->id }}" />
+                <x-member-item :member="$member" />
             @endforeach
         </div>
     </div>
