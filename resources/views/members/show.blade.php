@@ -41,7 +41,7 @@
         
         <div class="flex flex-col mt-12 gap-5">
             <h3 class="text-3xl font-semibold">Borrows History</h3>
-            <div class="">
+            <div class="flex flex-col gap-2">
                 @foreach ($borrows as $borrow)
                     <x-member-history-item :borrow="$borrow" />
                 @endforeach
