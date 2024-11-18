@@ -4,6 +4,7 @@ use App\Enums\UserRole;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Route;
@@ -13,15 +14,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 // General Routes for all type of users
 Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LIBRARIAN->value])->group(function () {
     Route::get('/members', [MemberController::class, 'index'])->name('members.index');
-    Route::get('/members/{id}', [MemberController::class, 'show'])->name('members.show');
     Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
+    Route::get('/members/{id}', [MemberController::class, 'show'])->name('members.show');
     Route::post('/members', [MemberController::class, 'store'])->name('members.store');
     Route::get('/members/{id}/edit', [MemberController::class, 'edit'])->name('members.edit');
     Route::put('/members/{id}', [MemberController::class, 'update'])->name('members.update');
@@ -42,6 +39,7 @@ Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LI
 });
 
 Route::middleware('auth', 'role:' . UserRole::ADMIN->value)->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
 });
 
