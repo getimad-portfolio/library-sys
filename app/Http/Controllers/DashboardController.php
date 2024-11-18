@@ -9,6 +9,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
+        // Top
+
         $topBooks = Book::select('books.isbn', DB::raw('COUNT(borrows.id) as borrow_count'))
             ->leftJoin('borrows', 'borrows.book_id', '=', 'books.id')
             ->groupBy('books.id')
@@ -22,6 +24,7 @@ class DashboardController extends Controller
             ->leftJoin('borrows', 'borrows.book_id', '=', 'books.id')
             ->groupBy('categories.id')
             ->orderByDesc('borrow_count')
+            ->limit(10)
             ->get();
 
         $topMembers = DB::table('members')
@@ -29,8 +32,25 @@ class DashboardController extends Controller
             ->leftJoin('borrows', 'borrows.member_id', '=', 'members.id')
             ->groupBy('members.id')
             ->orderByDesc('borrow_count')
+            ->limit(10)
             ->get();
 
-        return view('dashboard', compact('topBooks', 'topCategories', 'topMembers'));
+        // charts
+
+        $books = DB::table('books as b1')
+            ->join('books as b2', 'b1.id', '=', 'b2.id')
+            ->select(DB::raw('DATE(b1.created_at) as created_date'), DB::raw('COUNT(b1.id) as book_count'))
+            ->where('b1.created_at', '>=', now()->subDays(30))
+            ->groupBy('created_date')
+            ->orderBy('created_date')
+            ->limit(30)
+            ->get();
+
+        $booksChart = [
+            'labels' => $books->pluck('created_date')->map(fn($date) => \Carbon\Carbon::parse($date)->toDateString()),
+            'data' => $books->pluck('book_count'),
+        ];
+
+        return view('dashboard', compact('topBooks', 'topCategories', 'topMembers', 'booksChart'));
     }
 }

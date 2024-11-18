@@ -7,8 +7,10 @@
 
     <div class="grid grid-cols-3 gap-2">
         {{-- Charts --}}
-        <div class="col-span-2 bg-white rounded-md">
-
+        <div class="col-span-2">
+            <x-dash-card header="Books Added In The Past 30 Days" class="p-2 bg-white rounded-md">
+                <canvas id="bookschart"></canvas>
+            </x-dash-card>
         </div>
 
         {{-- Top records --}}
@@ -65,4 +67,30 @@
             </x-dash-card>
         </div>
     </div>
+    <script>
+        var ctx = document.getElementById('bookschart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: @json($booksChart['labels']),
+                datasets: [{
+                    label: 'Data',
+                    data: @json($booksChart['data']),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1 // Increment scale by 1
+                        },
+                    }
+                }
+            }
+        });
+    </script>
 </x-app-layout>
