@@ -25,8 +25,8 @@
 
         <div class="grid grid-cols-2 h-[500px] gap-8">
             <div class="flex flex-col gap-2">
-                <h2 class="text-2xl font-bold">Members</h2>
-                <div class="bg-white rounded-md p-2 h-full">
+                <div class="bg-white rounded-md p-2 h-full shadow-2xl shadow-gray-100 border">
+                    <h2 class="text-2xl font-bold mb-3">Members</h2>
                     <table class="table-auto w-full">
                         <tr class="text-left text-gray-500 text-sm">
                             <th class="w-12"></th>
@@ -48,8 +48,8 @@
                 </div>
             </div>
             <div class="flex flex-col gap-2">
-                <h2 class="text-2xl font-bold">Books</h2>
-                <div class="bg-white rounded-md p-2 h-full">
+                <div class="bg-white rounded-md p-2 h-full shadow-2xl shadow-gray-100 border">
+                    <h2 class="text-2xl font-bold mb-3">Books</h2>
                     <table class="table-auto w-full">
                         <tr class="text-left text-gray-500 text-sm">
                             <th class="w-12"></th>

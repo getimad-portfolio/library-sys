@@ -58,8 +58,8 @@
                                     </svg>
                                     {{ __('Books')}}
                                 </a>
-                                <a onclick="window.location.href='{{ route('books.create') }}';" style="background: none; border: none; color: blue; text-decoration: underline;">
-                                    <svg class="p-1 h-7 w-7 rounded-md hover:bg-gray-300 text-gray-500 hover:text-gray-700 transition-colors duration-300 ease-in-out" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                                <a onclick="window.location.href='{{ route('books.create') }}';">
+                                    <svg class="p-1 h-7 w-7 rounded-md hover:bg-gray-300 text-gray-500 hover:text-gray-700 transition-colors duration-300 ease-in-out cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                     </svg>
                                 </a>
