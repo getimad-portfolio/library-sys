@@ -7,9 +7,15 @@
 
     <div class="grid grid-cols-3 gap-2">
         {{-- Charts --}}
-        <div class="col-span-2">
+        <div class="col-span-2 flex flex-col gap-2">
             <x-dash-card header="Books Added In The Past 30 Days" class="p-2 bg-white rounded-md">
                 <canvas id="bookschart"></canvas>
+            </x-dash-card>
+            <x-dash-card header="Members Added In The Past 30 Days" class="p-2 bg-white rounded-md">
+                <canvas id="memeberschart"></canvas>
+            </x-dash-card>
+            <x-dash-card header="Borrows Added In The Past 30 Days" class="p-2 bg-white rounded-md">
+                <canvas id="borrowschart"></canvas>
             </x-dash-card>
         </div>
 
@@ -68,16 +74,66 @@
         </div>
     </div>
     <script>
-        var ctx = document.getElementById('bookschart').getContext('2d');
-        var myChart = new Chart(ctx, {
+        var ctx1 = document.getElementById('bookschart').getContext('2d');
+        var myChart1 = new Chart(ctx1, {
             type: 'bar',
             data: {
                 labels: @json($booksChart['labels']),
                 datasets: [{
-                    label: 'Data',
+                    label: 'Books',
                     data: @json($booksChart['data']),
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1 // Increment scale by 1
+                        },
+                    }
+                }
+            }
+        });
+
+        var ctx2 = document.getElementById('memeberschart').getContext('2d');
+        var myChart2 = new Chart(ctx2, {
+            type: 'bar',
+            data: {
+                labels: @json($membersChart['labels']),
+                datasets: [{
+                    label: 'Members',
+                    data: @json($membersChart['data']),
+                    backgroundColor: 'rgba(192, 75, 192, 0.2)',
+                    borderColor: 'rgba(192, 75, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1 // Increment scale by 1
+                        },
+                    }
+                }
+            }
+        });
+
+        var ctx3 = document.getElementById('borrowschart').getContext('2d');
+        var myChart3 = new Chart(ctx3, {
+            type: 'bar',
+            data: {
+                labels: @json($borrowsChart['labels']),
+                datasets: [{
+                    label: 'Borrows',
+                    data: @json($borrowsChart['data']),
+                    backgroundColor: 'rgba(192, 192, 75, 0.2)',
+                    borderColor: 'rgba(192, 192, 75, 1)',
                     borderWidth: 1
                 }]
             },

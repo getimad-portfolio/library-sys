@@ -1,4 +1,4 @@
-<div class="flex items-center rounded-md even:bg-gray-50 odd:bg-white border border-gray-100 hover:border-gray-200 transition-colors duration-200 ease-in-out">
+<div class="flex items-center rounded-md even:bg-gray-50 odd:bg-white border hover:border-gray-300 transition-colors duration-200 ease-in-out shadow-2xl shadow-gray-100">
     <a href="{{ route('members.show', $member->id) }}" class="flex items-center w-full p-2">
         <span class="w-1/12">
             <svg class="w-8 h-8 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

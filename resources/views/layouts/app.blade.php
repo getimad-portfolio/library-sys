@@ -18,8 +18,10 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 grid grid-cols-4">
+        <div class="min-h-screen bg-gray-100 grid grid-cols-4 relative">
             @include('layouts.navigation')
+
+            <div class="columns-1"></div> {{-- Space of the navbar --}}
 
             <div class="col-span-3 h-full w-full">
                 <!-- Page Heading -->

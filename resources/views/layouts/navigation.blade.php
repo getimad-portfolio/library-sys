@@ -3,7 +3,7 @@
 @endphp
 
 
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 m-2 rounded-md">
+<nav x-data="{ open: false }" class="bg-white m-2 rounded-md fixed top-0 left-0 w-1/4 h-[calc(100vh-1rem)] shadow-2xl shadow-gray-100 border">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between">

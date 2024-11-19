@@ -35,7 +35,7 @@
         <div class="flex flex-col gap-3">
             @foreach ($borrows as $borrow)
 
-            <div class="flex place-items-center p-2 rounded-md even:bg-gray-50 odd:bg-white">
+            <div class="flex place-items-center p-2 rounded-md even:bg-gray-50 odd:bg-white shadow-2xl shadow-gray-100 border">
                 <span class="w-1/12">
                     <svg class="w-7 h-7 text-gray-800" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m21 7.5-9-5.25L3 7.5m18 0-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />

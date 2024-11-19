@@ -1,4 +1,4 @@
-<div class="flex gap-3 bg-white p-2 rounded-md">
+<div class="flex gap-3 bg-white p-2 rounded-md shadow-2xl shadow-gray-100 border">
     <img class="w-32 h-48 object-cover rounded-sm" src="{{ $image }}" alt="Card image">
 
     <div class="flex-grow">
