@@ -39,13 +39,19 @@
         <!-- ISBN -->
         <div>
             <x-input-label for="isbn" :value="__('ISBN')" class="text-xl" />
-            <x-text-input id="isbn" name="isbn" type="text" class="mt-1 block w-full" :value="old('isbn')" required autofocus autocomplete="title" />
+            <x-text-input id="isbn" name="isbn" type="text" class="mt-1 block w-full" :value="old('isbn')" required autofocus autocomplete="isbn" />
+        </div>
+
+        <!-- Stock -->
+        <div>
+            <x-input-label for="stock" :value="__('Stock')" class="text-xl" />
+            <x-text-input id="stock" name="stock" type="number" class="mt-1 block w-full" :value="old('stock', 0)" min="0" required autofocus autocomplete="stock" />
         </div>
 
         <!-- Number of Pages -->
         <div>
             <x-input-label for="number_of_pages" :value="__('Number Of Pages')" class="text-xl" />
-            <x-text-input id="number_of_pages" name="number_of_pages" type="number" class="mt-1 block w-full" :value="old('number_of_pages')" required autofocus autocomplete="number_of_pages" />
+            <x-text-input id="number_of_pages" name="number_of_pages" type="number" class="mt-1 block w-full" :value="old('number_of_pages', 0)" required autofocus autocomplete="number_of_pages" />
         </div>
 
         <!-- Cover Image -->

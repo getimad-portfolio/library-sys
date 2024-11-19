@@ -45,6 +45,12 @@
             <x-text-input id="isbn" name="isbn" type="text" class="mt-1 block w-full" :value="old('isbn', $book->isbn)" required autofocus autocomplete="title" />
         </div>
 
+        <!-- Stock -->
+        <div>
+            <x-input-label for="stock" :value="__('Stock')" class="text-xl" />
+            <x-text-input id="stock" name="stock" type="number" class="mt-1 block w-full" :value="old('stock', $book->stock)" min="0" required autofocus autocomplete="stock" />
+        </div>
+
         <!-- Number of Pages -->
         <div>
             <x-input-label for="number_of_pages" :value="__('Number Of Pages')" class="text-xl" />

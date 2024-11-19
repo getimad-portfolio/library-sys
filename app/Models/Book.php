@@ -16,6 +16,7 @@ class Book extends Model implements Auditable
         'author',
         "description",
         "isbn",
+        "stock",
         "number_of_pages",
         "cover_image",
         "publication_date",

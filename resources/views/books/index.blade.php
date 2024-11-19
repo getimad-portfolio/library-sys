@@ -29,7 +29,7 @@
 
         <div class="flex flex-col gap-3">
             @foreach ($books as $book)
-                <x-book-item image="{{ $book->cover_image }}" header="{{ $book->title }}" author="{{ $book->author }}" description="{{ $book->description }}" isbn="{{ $book->isbn }}" numberOfPages="{{ $book->number_of_pages }}" category="{{ $book->category_name }}" bookId="{{ $book->id }}" />
+                <x-book-item :book="$book" />
             @endforeach
         </div>
     </div>

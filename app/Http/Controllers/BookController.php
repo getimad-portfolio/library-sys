@@ -67,13 +67,14 @@ class BookController extends Controller
             'author' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'isbn' => 'required|string|size:13|unique:books,isbn',
+            'stock' => 'required|integer|min:0',
             'number_of_pages' => 'required|integer|min:1',
             'cover_image' => 'required|image|max:2048',
             'publication_date' => 'required|date|before_or_equal:today',
             'category_id' => 'required|integer|exists:categories,id'
         ]);
 
-        $bookData = $request->only(['title', 'author', 'description', 'isbn', 'number_of_pages', 'publication_date', 'category_id']);
+        $bookData = $request->only(['title', 'author', 'description', 'isbn', 'stock', 'number_of_pages', 'publication_date', 'category_id']);
 
         if ($request->hasFile('cover_image')) {
             $file = $request->file('cover_image');
@@ -110,6 +111,7 @@ class BookController extends Controller
             'author' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
             'isbn' => 'required|string|size:13|unique:books,isbn,' . $book->id,
+            'stock' => 'required|integer|min:0',
             'number_of_pages' => 'required|integer|min:1',
             'cover_image' => 'nullable|image|max:2048',
             'publication_date' => 'required|date|before_or_equal:today',
