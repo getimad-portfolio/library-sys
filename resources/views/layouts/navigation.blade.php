@@ -64,6 +64,19 @@
                                     </svg>
                                 </a>
                             </x-nav-link>
+                            <x-nav-link :active="request()->routeIs('categories.*')" class="flex items-center justify-between">
+                                <a href="{{ route('categories.index') }}" class="flex gap-3 items-center w-full py-3">
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.25 8.25h15m-16.5 7.5h15m-1.8-13.5-3.9 19.5m-2.1-19.5-3.9 19.5" />
+                                    </svg>
+                                    {{ __('Categories')}}
+                                </a>
+                                <a onclick="window.location.href='{{ route('categories.create') }}';">
+                                    <svg class="p-1 h-7 w-7 rounded-md hover:bg-gray-300 text-gray-500 hover:text-gray-700 transition-colors duration-300 ease-in-out cursor-pointer" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                </a>
+                            </x-nav-link>
                             <x-nav-link :active="request()->routeIs('borrows.*')" class="flex items-center justify-between">
                                 <a href="{{ route('borrows.index') }}" class="flex items-center gap-3 w-full py-3">
                                     <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">

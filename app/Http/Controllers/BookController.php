@@ -20,7 +20,7 @@ class BookController extends Controller
 
         $books = DB::table('books')
             ->join('categories', 'books.category_id', '=', 'categories.id')
-            ->select('books.*', 'categories.name as category_name')
+            ->select('books.*', 'categories.name as category_name', 'categories.color as category_color')
             ->distinct()
 
             // Apply search filter if provided

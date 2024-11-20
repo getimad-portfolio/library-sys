@@ -9,7 +9,7 @@
             <h2 class="text-2xl font-bold inline">{{ $book->title }}</h2>
             <span class="text-slate-500 text-sm">&mdash; {{ $book->author }}</span>
         </div>
-        <span class="rounded-sm text-blue-700 text-sm font-bold">{{ $book->category_name }}</span>
+        <span class="rounded-sm text-sm font-bold" style="color: {{ $book->category_color }}">{{ $book->category_name }}</span>
         <p class="my-4 min-h-28">{{ Str::limit($book->description, 550, '...') }}</p>
         <span class="bg-gray-200 rounded-sm p-1 text-gray-700 text-xs font-bold">{{ $book->isbn }}</span>
     </div>
