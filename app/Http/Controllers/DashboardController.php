@@ -79,6 +79,9 @@ class DashboardController extends Controller
             'data' => $borrows->pluck('borrow_count')
         ];
 
-        return view('dashboard', compact('topBooks', 'topCategories', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart'));
+        // Total Stock
+        $totalStock = Book::sum('stock');
+
+        return view('dashboard', compact('topBooks', 'topCategories', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart', 'totalStock'));
     }
 }

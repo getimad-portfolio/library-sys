@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="grid grid-cols-3 gap-2">
+    <div class="grid grid-cols-3 gap-2 mb-2">
         {{-- Charts --}}
         <div class="col-span-2 flex flex-col gap-2">
             <x-dash-card header="Books Added In The Past 30 Days" class="p-2 bg-white rounded-md">
@@ -21,6 +21,13 @@
 
         {{-- Top records --}}
         <div class="flex flex-col gap-2">
+            {{-- TOTAL STOCKS --}}
+            <x-dash-card header="Total Stock">
+                <div class="grid h-full place-items-center">
+                    <span class="text-9xl font-bold">{{ $totalStock }}</span>
+                </div>
+            </x-dash-card>
+
             {{-- BOOKS --}}
             <x-dash-card header="Top Books">
                 <ul>
