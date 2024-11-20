@@ -50,7 +50,7 @@
                     <form action="{{ route('borrows.update', $borrow->id) }}" method="POST" class="grid place-items-center">
                         @csrf
                         @method('PUT')
-                        <select name="status" id="status" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-xs h-8 font-semibold uppercase" onchange="this.form.submit()">
+                        <select name="status" id="status" class="border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm text-xs h-8 font-semibold uppercase" onchange="this.form.submit()" {{ $borrow->book->stock == 0 && $borrow->status != 'borrowed' ? 'disabled' : '' }}>
                             @foreach(BorrowStatus::cases() as $BorrowStatus)
                                 <option value="{{ $BorrowStatus->value }}" {{ old('status', $borrow->status) == $BorrowStatus->value ? 'selected' : '' }} class="text-xs">
                                     {{ $BorrowStatus->label() }}

@@ -56,16 +56,20 @@
                             <th>ISBN</th>
                             <th>Title</th>
                             <th>Author</th>
+                            <th>Stock</th>
                         </tr>
                         @foreach ($books as $book)
-                            <tr class="hover:bg-gray-100 cursor-pointer" onclick="
-                                document.getElementById('book{{ $book->id }}').click();
-                            ">
-                                <td><input type="radio" name="book_id" id="book{{ $book->id }}" value="{{ $book->id }}"></td>
-                                <td class="font-semibold">{{ $book->isbn }}</td>
-                                <td>{{ $book->title }}</td>
-                                <td>{{ $book->author }}</td>
-                            </tr>
+                            @if ($book->stock != 0)
+                                <tr class="hover:bg-gray-100 cursor-pointer" onclick="
+                                    document.getElementById('book{{ $book->id }}').click();
+                                ">
+                                    <td><input type="radio" name="book_id" id="book{{ $book->id }}" value="{{ $book->id }}"></td>
+                                    <td class="font-semibold">{{ $book->isbn }}</td>
+                                    <td>{{ $book->title }}</td>
+                                    <td>{{ $book->author }}</td>
+                                    <td>{{ $book->stock }}</td>
+                                </tr>
+                            @endif
                         @endforeach
                     </table>
                 </div>

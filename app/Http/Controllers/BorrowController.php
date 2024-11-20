@@ -63,8 +63,18 @@ class BorrowController extends Controller
             'due_date' => 'required|date|after:borrow_date',    // Ensures it's a valid date and after the borrow_date
         ]);
 
-        Borrow::create($validationData);
+        $book = Book::findOrFail($request->book_id);
 
+        if ($book->stock == 0) {
+            return redirect()->back()->withErrors([
+                'book_id' => 'This book is out of stock and cannot be borrowed.',
+            ]);
+        }
+        
+        $book->decrement('stock');
+
+        Borrow::create($validationData);
+        
         return redirect()->route('borrows.index')->with('success', 'Borrow created successfully.');
     }
 
@@ -78,11 +88,18 @@ class BorrowController extends Controller
         ]);
 
         $borrow = Borrow::findOrFail($id);
+        $book = Book::findOrFail($borrow->book_id);
 
-        if ($request->status == 'returned') {
+        if ($borrow->status != 'borrowed' && $request->status == 'borrowed') {
+            if ($book->stock > 0) {
+                $borrow->update(['status' => $request->status, 'returned_at' => null]);
+                $book->decrement('stock');
+            }
+        } else if ($borrow->status == 'borrowed' && $request->status != 'borrowed') {
             $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
+            $book->increment('stock');
         } else {
-            $borrow->update(['status' => $request->status, 'returned_at' => null]);
+            $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
         }
 
         return redirect()->route('borrows.index')->with('success', 'Borrow updated successfully.');
