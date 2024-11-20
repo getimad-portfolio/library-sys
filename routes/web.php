@@ -34,7 +34,9 @@ Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LI
 
     Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
     Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
 
     Route::get('/borrows', [BorrowController::class, 'index'])->name('borrows.index');
     Route::get('/borrows/create', [BorrowController::class, 'create'])->name('borrows.create');

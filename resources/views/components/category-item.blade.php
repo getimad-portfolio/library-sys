@@ -12,5 +12,10 @@
             @method('PUT')
             <input type="color" id="favcolor" name="favcolor" value="{{ $category->color }}" onchange="this.form.submit()">
         </form>
+        <form action="{{ route('categories.destroy', $category->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this category?');" class="grid place-items-center">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="font-bold bg-red-500 p-2 rounded-full"></button>
+        </form>
     </div>
 </div>
