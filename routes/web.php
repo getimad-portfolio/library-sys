@@ -6,6 +6,8 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\LibrarianDashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Route;
@@ -45,8 +47,12 @@ Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LI
 });
 
 Route::middleware('auth', 'role:' . UserRole::ADMIN->value)->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+});
+
+Route::middleware('auth', 'role:' . UserRole::LIBRARIAN->value)->group(function () {
+    Route::get('/librarian/dashboard', [LibrarianDashboardController::class, 'index'])->name('librarian.dashboard');
 });
 
 Route::middleware(['auth', 'role:' . UserRole::LIBRARIAN->value . ',' . UserRole::ADMIN->value])->group(function () {
