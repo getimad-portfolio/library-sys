@@ -5,7 +5,6 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminDashboardController;
 use App\Http\Controllers\LibrarianDashboardController;
 use App\Http\Controllers\MemberController;

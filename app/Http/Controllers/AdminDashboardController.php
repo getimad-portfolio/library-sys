@@ -82,6 +82,6 @@ class AdminDashboardController extends Controller
         // Total Stock
         $totalStock = Book::sum('stock');
 
-        return view('dashboard', compact('topBooks', 'topCategories', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart', 'totalStock'));
+        return view('dashboards.admin', compact('topBooks', 'topCategories', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart', 'totalStock'));
     }
 }
