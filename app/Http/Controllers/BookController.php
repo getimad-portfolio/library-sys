@@ -88,6 +88,12 @@ class BookController extends Controller
         return redirect()->route('books.index')->with('success', 'Book added successfully!');
     }
 
+    public function show(string $id) {
+        $book = Book::with('category')->FindOrFail($id);
+
+        return view('books.show', compact('book'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */

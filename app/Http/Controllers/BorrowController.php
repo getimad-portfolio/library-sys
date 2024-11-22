@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\BorrowStatus;
 use Illuminate\Http\Request;
 use App\Models\Borrow;
 use App\Models\Member;
 use App\Models\Book;
+use App\Models\Review;
 
 class BorrowController extends Controller
 {
@@ -100,6 +102,20 @@ class BorrowController extends Controller
             $book->increment('stock');
         } else {
             $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
+        }
+
+        if ($request->isConfirmed) {
+            $request->validate([
+                'description' => 'nullable|string|max:1000',
+                'rating' => 'nullable|numeric|min:0|max:5',
+            ]);
+
+            Review::create([
+                'description' => $request->description,
+                'rating' => $request->rating,
+                'book_id' => $borrow->book_id,
+                'member_id' => $borrow->member_id
+            ]);
         }
 
         return redirect()->route('borrows.index')->with('success', 'Borrow updated successfully.');

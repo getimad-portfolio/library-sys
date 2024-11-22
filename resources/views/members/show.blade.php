@@ -21,21 +21,21 @@
                 <h3 class="text-xl font-semibold">General Information</h3>
                 <div class="flex flex-row items-start justify-between w-full">
                     <div class="flex flex-col gap-2">
-                        <x-member-info-item title="Full Name" content="{{ $member->full_name }}" />
-                        <x-member-info-item title="CNIE" content="{{ $member->cnie }}" />
-                        <x-member-info-item title="Created By" content="{{ $member->user->full_name }}" />
-                        <x-member-info-item title="Created At" content="{{ $member->created_at }}" />
+                        <x-info-item title="Full Name" content="{{ $member->full_name }}" />
+                        <x-info-item title="CNIE" content="{{ $member->cnie }}" />
+                        <x-info-item title="Created By" content="{{ $member->user->full_name }}" />
+                        <x-info-item title="Created At" content="{{ $member->created_at }}" />
                     </div>
                     <div class="w-96">
-                        <x-member-info-item title="Adress" content="{{ $member->adress }}" />
+                        <x-info-item title="Adress" content="{{ $member->adress }}" />
                     </div>
                 </div>
             </div>
         </div>
         <div class="flex flex-row bg-white rounded-md p-2 items-center justify-between">
             <h3 class="text-xl font-semibold">Contacts</h3>
-            <x-member-info-item title="Email" content="{{ $member->email }}" />
-            <x-member-info-item title="Phone Number" content="{{ $member->phone_number }}" />
+            <x-info-item title="Email" content="{{ $member->email }}" />
+            <x-info-item title="Phone Number" content="{{ $member->phone_number }}" />
             <div class="flex flex-col gap-2"></div>
         </div>
         
