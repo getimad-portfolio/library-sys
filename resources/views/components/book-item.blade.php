@@ -1,18 +1,20 @@
-<div class="flex gap-3 bg-white p-2 rounded-md shadow-2xl shadow-gray-100 border">
-    <div class="relative h-60 w-52">
-        <img class="h-full w-full object-cover rounded-sm" src="{{ Storage::url("covers/{$book->cover_image}"); }}" alt="Card image">
-        <span class="px-1 font-bold bg-gray-100/70 text-gray-900 text-sm rounded-sm absolute top-1 left-1">Stock: {{ $book->stock }}</span>
-    </div>
-
-    <div class="w-full">
-        <div class="flex justify-between items-center">
-            <h2 class="text-2xl font-bold inline">{{ $book->title }}</h2>
-            <span class="text-slate-500 text-sm">&mdash; {{ $book->author }}</span>
+<div class="flex gap-3 p-2 bg-white rounded-md border even:bg-gray-50 odd:bg-white hover:border-gray-300 transition-colors duration-200 ease-in-out shadow-2xl shadow-gray-100">
+    <a href="{{ route('books.show', $book->id) }}" class="flex items-center w-full gap-3">
+        <div class="relative h-60 w-52">
+            <img class="h-full w-full object-cover rounded-sm" src="{{ Storage::url("covers/{$book->cover_image}"); }}" alt="Card image">
+            <span class="px-1 font-bold bg-gray-100/70 text-gray-900 text-sm rounded-sm absolute top-1 left-1">Stock: {{ $book->stock }}</span>
         </div>
-        <span class="rounded-sm text-sm font-bold" style="color: {{ $book->category_color }}">{{ $book->category_name }}</span>
-        <p class="my-4 min-h-28">{{ Str::limit($book->description, 550, '...') }}</p>
-        <span class="bg-gray-200 rounded-sm p-1 text-gray-700 text-xs font-bold">{{ $book->isbn }}</span>
-    </div>
+
+        <div class="w-full">
+            <div class="flex justify-between items-center">
+                <h2 class="text-2xl font-bold inline">{{ $book->title }}</h2>
+                <span class="text-slate-500 text-sm">&mdash; {{ $book->author }}</span>
+            </div>
+            <span class="rounded-sm text-sm font-bold" style="color: {{ $book->category_color }}">{{ $book->category_name }}</span>
+            <p class="my-4 min-h-28">{{ Str::limit($book->description, 550, '...') }}</p>
+            <span class="bg-gray-200 rounded-sm p-1 text-gray-700 text-xs font-bold">{{ $book->isbn }}</span>
+        </div>
+    </a>
 
     <div class="flex flex-col gap-2 items-center justify-center">
         <a href="{{ route('books.edit', $book->id) }}" class="bg-green-100 font-bold hover:bg-green-200 text-green-700 py-2 px-4 rounded flex-grow w-24 grid place-items-center">

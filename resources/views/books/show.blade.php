@@ -47,11 +47,11 @@
         
         <div class="flex flex-col mt-12 gap-5">
             <h3 class="text-3xl font-semibold">Reviews</h3>
-            {{-- <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2">
                 @foreach ($reviews as $review)
                     <x-review-book-item :review="$review" />
                 @endforeach
-            </div> --}}
+            </div>
         </div>
     </div>
 </x-app-layout>

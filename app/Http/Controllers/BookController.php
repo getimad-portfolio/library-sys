@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Review;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
@@ -90,8 +91,11 @@ class BookController extends Controller
 
     public function show(string $id) {
         $book = Book::with('category')->FindOrFail($id);
+        $reviews = Review::with('member')
+            ->where('book_id', $id)
+            ->get();
 
-        return view('books.show', compact('book'));
+        return view('books.show', compact('book', 'reviews'));
     }
 
     /**

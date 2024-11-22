@@ -29,4 +29,9 @@ class Member extends Model implements Auditable
     {
         return $this->hasMany(Borrow::class);
     }
+
+    public function review()
+    {
+        return $this->hasMany(Review::class);
+    }
 }
