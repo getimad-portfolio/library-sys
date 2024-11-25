@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
 use App\Models\Book;
+use OwenIt\Auditing\Models\Audit;
 
 class AdminDashboardController extends Controller
 {
@@ -79,9 +80,14 @@ class AdminDashboardController extends Controller
             'data' => $borrows->pluck('borrow_count')
         ];
 
+        // Recent Activities
+        $audits = Audit::orderBy('created_at', 'asc')
+            ->limit(5)
+            ->get();
+
         // Total Stock
         $totalStock = Book::sum('stock');
 
-        return view('dashboards.admin', compact('topBooks', 'topCategories', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart', 'totalStock'));
+        return view('dashboards.admin', compact('topBooks', 'topCategories', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart', 'totalStock', 'audits'));
     }
 }

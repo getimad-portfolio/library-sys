@@ -78,7 +78,18 @@
                     @endforeach
                 </ul>
             </x-dash-card>
+
+            {{-- Rencent Activities --}}
         </div>
+        <x-dash-card header="Rencent Activities" class="col-span-3">
+            <a href="{{ route('logs.index') }}">
+                <div class="flex flex-col gap-2">
+                    @foreach ($audits as $audit)
+                        <x-audit-item :audit="$audit" />
+                    @endforeach
+                </div>
+            </a>
+        </x-dash-card>
     </div>
     <script>
         var ctx1 = document.getElementById('bookschart').getContext('2d');
