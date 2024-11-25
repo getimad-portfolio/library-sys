@@ -21,7 +21,8 @@ class BookController extends Controller
 
         $books = DB::table('books')
             ->join('categories', 'books.category_id', '=', 'categories.id')
-            ->select('books.*', 'categories.name as category_name', 'categories.color as category_color')
+            ->leftJoin('reviews', 'books.id', '=', 'reviews.book_id')
+            ->select('books.*', 'categories.name as category_name', 'categories.color as category_color', DB::raw('AVG(reviews.rating) as avg_rating'))
             ->distinct()
 
             // Apply search filter if provided
@@ -41,6 +42,8 @@ class BookController extends Controller
                     $query->where('books.category_id', '=', $catId);
                 }
             })
+
+            ->groupBy('books.id', 'categories.id')
 
             ->get();
 

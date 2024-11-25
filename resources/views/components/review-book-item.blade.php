@@ -35,7 +35,6 @@
                         @endif
                     @endfor
                 </div>
-                
             </span>
             <span class="w-1/6 px-2 text-right">{{ $review->created_at }}</span>
         </div>

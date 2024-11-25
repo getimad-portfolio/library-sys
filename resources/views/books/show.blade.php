@@ -38,8 +38,8 @@
                             </form>
                         </div>
                     </div>
-                    <div class="w-96">
-                        <x-info-item title="Description" content="{{ $book->description }}" />
+                    <div class="w-96 text-sm">
+                        <x-info-item title="Description" content="{{ Str::limit($book->description, 500, '...')  }}" />
                     </div>
                 </div>
             </div>

@@ -27,7 +27,7 @@
             </form>
         </div>
 
-        <div class="flex flex-col gap-3">
+        <div class="grid grid-cols-3 gap-2">
             @foreach ($books as $book)
                 <x-book-item :book="$book" />
             @endforeach

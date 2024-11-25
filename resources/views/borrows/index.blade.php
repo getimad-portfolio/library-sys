@@ -13,11 +13,11 @@
     <div>
         <div id="confirmationModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50 hidden">
             <div class="bg-white p-4 rounded shadow-lg w-1/3">
-                <h2 class="text-xl font-semibold mb-2">Add Review</h2>
+                <h2 class="text-xl font-semibold mb-2">Add Review (Optional)</h2>
                 <p class="mb-4">Kindly request the member to provide a rating for the book?</p>
                 <div class="space-y-3">
                     <div class="space-y-2">
-                        <x-input-label for="description" :value="__('Description (Optional)')" class="text-xl" />
+                        <x-input-label for="description" :value="__('Description')" class="text-xl" />
                         <x-text-area id="description" name="description" type="text" class="mt-1 block w-full h-44" :value="old('description')" autofocus autocomplete="description" />
                     </div>
                     <div class="space-y-2">
