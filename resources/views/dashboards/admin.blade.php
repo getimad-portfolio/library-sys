@@ -28,6 +28,11 @@
                 </div>
             </x-dash-card>
 
+            {{-- CATEGORIES --}}
+            <x-dash-card header="Top Categories" class="flex-grow-0 pb-3">
+                <canvas id="categorieschart"></canvas>
+            </x-dash-card>
+
             {{-- BOOKS --}}
             <x-dash-card header="Top Books">
                 <ul>
@@ -40,23 +45,6 @@
                         <li class="flex justify-between">
                             <span>{{ $topBook->isbn }}</span>
                             <span>{{ $topBook->borrow_count }}</span>
-                        </li>
-                    @endforeach
-                </ul>
-            </x-dash-card>
-
-            {{-- CATEGORIES --}}
-            <x-dash-card header="Top Categories">
-                <ul>
-                    <li class="flex justify-between text-xs font-bold text-gray-500">
-                        <span>Name</span>
-                        <span>COUNT</span>
-                    </li>
-
-                    @foreach ($topCategories as $topCategorie)
-                        <li class="flex justify-between">
-                            <span>{{ $topCategorie->name }}</span>
-                            <span>{{ $topCategorie->borrow_count }}</span>
                         </li>
                     @endforeach
                 </ul>
@@ -165,6 +153,22 @@
                     }
                 }
             }
+        });
+
+        
+        var ctx4 = document.getElementById('categorieschart').getContext('2d');
+        var myChart4 = new Chart(ctx4, {
+            type: 'doughnut',
+            data: {
+                labels: @json($categoriesChart['labels']),
+                datasets: [{
+                    label: 'Borrows',
+                    data: @json($categoriesChart['data']),
+                    backgroundColor: @json($categoriesChart['colors']).map(color => color + '33'),
+                    borderColor: @json($categoriesChart['colors']),
+                    borderWidth: 1
+                }]
+            },
         });
     </script>
 </x-app-layout>

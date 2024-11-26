@@ -19,15 +19,6 @@ class AdminDashboardController extends Controller
             ->limit(10)
             ->get();
 
-        $topCategories = DB::table('categories')
-            ->select('categories.name', DB::raw('COUNT(borrows.id) as borrow_count'))
-            ->leftJoin('books', 'books.category_id', '=', 'categories.id')
-            ->leftJoin('borrows', 'borrows.book_id', '=', 'books.id')
-            ->groupBy('categories.id')
-            ->orderByDesc('borrow_count')
-            ->limit(10)
-            ->get();
-
         $topMembers = DB::table('members')
             ->select('members.cnie', DB::raw('COUNT(borrows.id) as borrow_count'))
             ->leftJoin('borrows', 'borrows.member_id', '=', 'members.id')
@@ -79,6 +70,22 @@ class AdminDashboardController extends Controller
             'labels' => $borrows->pluck('created_date')->map(fn($date) => \Carbon\Carbon::parse($date)->toDateString()),
             'data' => $borrows->pluck('borrow_count')
         ];
+        
+
+        $categories = DB::table('categories')
+            ->select('categories.name', 'categories.color', DB::raw('COUNT(borrows.id) as borrow_count'))
+            ->leftJoin('books', 'books.category_id', '=', 'categories.id')
+            ->leftJoin('borrows', 'borrows.book_id', '=', 'books.id')
+            ->groupBy('categories.id')
+            ->orderByDesc('borrow_count')
+            ->limit(10)
+            ->get();
+
+        $categoriesChart = [
+            'labels' => $categories->pluck('name'),
+            'data' => $categories->pluck('borrow_count'),
+            'colors' => $categories->pluck('color')
+        ];
 
         // Recent Activities
         $audits = Audit::orderBy('created_at', 'asc')
@@ -88,6 +95,6 @@ class AdminDashboardController extends Controller
         // Total Stock
         $totalStock = Book::sum('stock');
 
-        return view('dashboards.admin', compact('topBooks', 'topCategories', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart', 'totalStock', 'audits'));
+        return view('dashboards.admin', compact('topBooks', 'categoriesChart', 'topMembers', 'booksChart', 'membersChart', 'borrowsChart', 'totalStock', 'audits'));
     }
 }
