@@ -47,4 +47,12 @@
             @endforeach
         </div>
     </div>
+
+    <div class="fixed z-10 bottom-6 right-6">
+        <form action="{{ route('log.destroyAll') }}" method="POST" onsubmit="return confirm('Are you sure you want to delete all records?');" class="grid place-items-center">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="bg-red-500 text-white transition-all duration-300 px-4 py-2 rounded-md font-bold opacity-80 hover:opacity-100">DELETE ALL</button>
+        </form>
+    </div>
 </x-app-layout>

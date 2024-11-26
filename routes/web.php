@@ -62,6 +62,7 @@ Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LI
 Route::middleware('auth', 'role:' . UserRole::ADMIN->value)->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
     Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
+    Route::delete('/logs', [LogController::class, 'destroyAll'])->name('log.destroyAll');
 });
 
 Route::middleware('auth', 'role:' . UserRole::LIBRARIAN->value)->group(function () {
