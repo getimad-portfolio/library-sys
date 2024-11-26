@@ -2,15 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\TelegramMessage;
 use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Models\Category;
 use App\Models\Review;
+use App\Services\TelegramNotificationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
+    private $telegramService;
+
+    public function __construct(TelegramNotificationService $telegramService)
+    {
+        $this->telegramService = $telegramService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -87,7 +97,10 @@ class BookController extends Controller
             $bookData['cover_image'] = $filename;
         }
 
-        Book::create($bookData);
+        $book = Book::create($bookData);
+
+        $telegramMessage = new TelegramMessage('Book', $book->title, 'Create', Auth::user()->full_name);
+        $this->telegramService->sendMessage($telegramMessage);
 
         return redirect()->route('books.index')->with('success', 'Book added successfully!');
     }
@@ -139,7 +152,10 @@ class BookController extends Controller
             $book->cover_image = $filename;
         }
 
-        $book->update($request->except('cover_image'));
+        $book = $book->update($request->except('cover_image'));
+
+        $telegramMessage = new TelegramMessage('Book', $book->title, 'Update', Auth::user()->full_name);
+        $this->telegramService->sendMessage($telegramMessage);
 
         return redirect()->route('books.index')->with('success', 'Book updated successfully.');
     }
@@ -156,6 +172,9 @@ class BookController extends Controller
         }
 
         $book->delete();
+
+        $telegramMessage = new TelegramMessage('Book', $book->title, 'Delete', Auth::user()->full_name);
+        $this->telegramService->sendMessage($telegramMessage);
 
         return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
     }

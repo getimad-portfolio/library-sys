@@ -10,7 +10,20 @@ use App\Http\Controllers\LibrarianDashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Route;
+use Telegram\Bot\Laravel\Facades\Telegram;
 
+
+Route::get('/send-message', function () {
+    $chatId = '7791769874'; // Replace with your chat ID
+    $message = 'Hello, this is a message from Laravel!';
+    
+    Telegram::sendMessage([
+    'chat_id' => $chatId,
+    'text' => $message,
+    ]);
+    
+    return 'Message sent to Telegram!';
+});
 
 Route::get('/', function () {
     return view('welcome');

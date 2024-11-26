@@ -2,15 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\BorrowStatus;
+use App\Classes\TelegramMessage;
 use Illuminate\Http\Request;
 use App\Models\Borrow;
 use App\Models\Member;
 use App\Models\Book;
 use App\Models\Review;
+use App\Services\TelegramNotificationService;
+use Illuminate\Support\Facades\Auth;
 
 class BorrowController extends Controller
 {
+    private $telegramService;
+
+    public function __construct(TelegramNotificationService $telegramService)
+    {
+        $this->telegramService = $telegramService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -75,7 +84,12 @@ class BorrowController extends Controller
         
         $book->decrement('stock');
 
-        Borrow::create($validationData);
+        $borrow = Borrow::create($validationData);
+
+        $book = Book::findOrFail($borrow->book_id);
+
+        $telegramMessage = new TelegramMessage('Borrow', $book->title, 'Borrow', Auth::user()->full_name);
+        $this->telegramService->sendMessage($telegramMessage);
         
         return redirect()->route('borrows.index')->with('success', 'Borrow created successfully.');
     }
@@ -100,8 +114,12 @@ class BorrowController extends Controller
         } else if ($borrow->status == 'borrowed' && $request->status != 'borrowed') {
             $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
             $book->increment('stock');
+            $telegramMessage = new TelegramMessage('Borrow', $book->title, ucfirst($request->status), Auth::user()->full_name);
+            $this->telegramService->sendMessage($telegramMessage);
         } else {
             $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
+            $telegramMessage = new TelegramMessage('Borrow', $book->title, ucfirst($request->status), Auth::user()->full_name);
+            $this->telegramService->sendMessage($telegramMessage);
         }
 
         if ($request->isConfirmed) {

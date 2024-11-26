@@ -2,14 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\TelegramMessage;
 use App\Models\Borrow;
 use App\Models\Member;
+use App\Services\TelegramNotificationService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class MemberController extends Controller
 {
+    private $telegramService;
+
+    public function __construct(TelegramNotificationService $telegramService)
+    {
+        $this->telegramService = $telegramService;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -64,7 +73,11 @@ class MemberController extends Controller
         
         $validationData['user_id'] = Auth::id();
 
-        Member::create($validationData);
+        $member = Member::create($validationData);
+
+        
+        $telegramMessage = new TelegramMessage('Member', $member->full_name, 'Create', Auth::user()->full_name);
+        $this->telegramService->sendMessage($telegramMessage);
 
         return redirect()->route('members.index')->with('success', 'Member created successfully.');
     }
@@ -87,10 +100,10 @@ class MemberController extends Controller
     {
         $member = Member::findOrFail($id);
         $createdBy = Auth::user()->full_name;
-
+        
         return view('members.edit', compact('member', 'createdBy'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
@@ -105,8 +118,11 @@ class MemberController extends Controller
             'cnie' => 'required|string|size:10|unique:members,cnie,' . $member->id,
             'phone_number' => 'required|string|regex:/^\+?[0-9]{10,15}$/',
         ]);
-
+        
         $member->update($request->all());
+
+        $telegramMessage = new TelegramMessage('Member', $member->full_name, 'Update', Auth::user()->full_name);
+        $this->telegramService->sendMessage($telegramMessage);
 
         return redirect()->route('members.index')->with('success', 'Book updated successfully.');
     }
@@ -117,7 +133,10 @@ class MemberController extends Controller
     public function destroy(string $id)
     {
         $member = Member::findOrFail($id);
-        $member->delete();
+        $member = $member->delete();
+
+        $telegramMessage = new TelegramMessage('Member', $member->full_name, 'Delete', Auth::user()->full_name);
+        $this->telegramService->sendMessage($telegramMessage);
 
         return redirect()->route('members.index')->with('success', 'Book deleted successfully.');
     }
