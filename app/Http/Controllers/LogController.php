@@ -56,6 +56,8 @@ class LogController extends Controller
     public function destroyAll()
     {
         Audit::truncate();
+        
+        session()->flash('success', 'Update log has been updated successfully!');
 
         return view('logs.index');
     }

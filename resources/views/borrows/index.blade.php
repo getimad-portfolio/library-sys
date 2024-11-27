@@ -91,6 +91,11 @@
         @endforeach
         </div>
     </div>
+
+    @if (session('success'))        
+        <x-notification-action />
+    @endif
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('confirmationModal');

@@ -50,8 +50,10 @@ class CategoryController extends Controller
 
         $telegramMessage = new TelegramMessage('Category', $category->name, 'Create', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
-
-        return redirect()->route('categories.index')->with('Success', 'Category created successfully.');
+        
+        session()->flash('success', "Category has been added successfully!");
+        
+        return redirect()->route('categories.index');
     }
     
     public function update(Request $request, $id)
@@ -67,7 +69,7 @@ class CategoryController extends Controller
         $telegramMessage = new TelegramMessage('Category', $category->name, 'Update', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
 
-        return redirect()->route('categories.index')->with('Success', 'Category updated successfully.');
+        return redirect()->route('categories.index')->with('success', 'Category has been updated successfully.');
     }
 
     public function destroy($id) {
@@ -77,6 +79,6 @@ class CategoryController extends Controller
         $telegramMessage = new TelegramMessage('Category', $category->name, 'Delete', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
 
-        return redirect()->route('categories.index')->with('success', 'Category deleted successfully');
+        return redirect()->route('categories.index')->with('success', 'Category has been deleted successfully');
     }
 }

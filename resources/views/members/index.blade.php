@@ -29,4 +29,8 @@
             @endforeach
         </div>
     </div>
+
+    @if (session('success'))        
+        <x-notification-action />
+    @endif
 </x-app-layout>

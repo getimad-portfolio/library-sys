@@ -57,4 +57,8 @@
             <button type="submit" class="bg-red-500 text-white transition-all duration-300 px-4 py-2 rounded-md font-bold opacity-80 hover:opacity-100">DELETE ALL</button>
         </form>
     </div>
+
+    @if(@session('success'))
+        <x-notification-action />
+    @endif
 </x-app-layout>

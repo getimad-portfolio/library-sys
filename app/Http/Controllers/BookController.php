@@ -102,7 +102,7 @@ class BookController extends Controller
         $telegramMessage = new TelegramMessage('Book', $book->title, 'Create', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
 
-        return redirect()->route('books.index')->with('success', 'Book added successfully!');
+        return redirect()->route('books.index')->with('success', 'Book has been added successfully!');
     }
 
     public function show(string $id) {
@@ -152,12 +152,12 @@ class BookController extends Controller
             $book->cover_image = $filename;
         }
 
-        $book = $book->update($request->except('cover_image'));
+        $book->update($request->except('cover_image'));
 
         $telegramMessage = new TelegramMessage('Book', $book->title, 'Update', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
 
-        return redirect()->route('books.index')->with('success', 'Book updated successfully.');
+        return redirect()->route('books.index')->with('success', 'Book has been updated successfully.');
     }
 
     /**
@@ -176,6 +176,6 @@ class BookController extends Controller
         $telegramMessage = new TelegramMessage('Book', $book->title, 'Delete', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
 
-        return redirect()->route('books.index')->with('success', 'Book deleted successfully.');
+        return redirect()->route('books.index')->with('success', 'Book has been deleted successfully.');
     }
 }

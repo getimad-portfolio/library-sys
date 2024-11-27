@@ -91,7 +91,7 @@ class BorrowController extends Controller
         $telegramMessage = new TelegramMessage('Borrow', $book->title, 'Borrow', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
         
-        return redirect()->route('borrows.index')->with('success', 'Borrow created successfully.');
+        return redirect()->route('borrows.index')->with('success', 'Borrow has been created successfully.');
     }
 
     /**
@@ -136,6 +136,6 @@ class BorrowController extends Controller
             ]);
         }
 
-        return redirect()->route('borrows.index')->with('success', 'Borrow updated successfully.');
+        return redirect()->route('borrows.index')->with('success', 'Borrow has been updated successfully.');
     }
 }
