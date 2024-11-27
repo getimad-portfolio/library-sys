@@ -10,20 +10,6 @@ use App\Http\Controllers\LibrarianDashboardController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\LogController;
 use Illuminate\Support\Facades\Route;
-use Telegram\Bot\Laravel\Facades\Telegram;
-
-
-Route::get('/send-message', function () {
-    $chatId = '7791769874'; // Replace with your chat ID
-    $message = 'Hello, this is a message from Laravel!';
-    
-    Telegram::sendMessage([
-    'chat_id' => $chatId,
-    'text' => $message,
-    ]);
-    
-    return 'Message sent to Telegram!';
-});
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,48 +17,61 @@ Route::get('/', function () {
 
 // General Routes for all type of users
 Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LIBRARIAN->value])->group(function () {
-    Route::get('/members', [MemberController::class, 'index'])->name('members.index');
-    Route::get('/members/create', [MemberController::class, 'create'])->name('members.create');
-    Route::get('/members/{id}', [MemberController::class, 'show'])->name('members.show');
-    Route::post('/members', [MemberController::class, 'store'])->name('members.store');
-    Route::get('/members/{id}/edit', [MemberController::class, 'edit'])->name('members.edit');
-    Route::put('/members/{id}', [MemberController::class, 'update'])->name('members.update');
-    Route::delete('/members/{id}', [MemberController::class, 'destroy'])->name('members.destroy');
+    Route::controller(MemberController::class)->prefix('/members')->name('members.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/{id}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+    });
 
-    Route::get('/books', [BookController::class, 'index'])->name('books.index');
-    Route::get('/books/create', [BookController::class, 'create'])->name('books.create');
-    Route::get('/books/{id}', [BookController::class, 'show'])->name('books.show');
-    Route::post('/books', [BookController::class, 'store'])->name('books.store');
-    Route::get('/books/{id}/edit', [BookController::class, 'edit'])->name('books.edit');
-    Route::put('/books/{id}', [BookController::class, 'update'])->name('books.update');
-    Route::delete('/books/{id}', [BookController::class, 'destroy'])->name('books.destroy');
+    Route::controller(BookController::class)->prefix('/books')->name('books.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::get('/{id}', 'show')->name('show');
+        Route::post('/', 'store')->name('store');
+        Route::get('/{id}/edit', 'edit')->name('edit');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+    });
 
-    Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');
-    Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
-    Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-    Route::put('/categories/{id}', [CategoryController::class, 'update'])->name('categories.update');
-    Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+    Route::controller(CategoryController::class)->prefix('/categories')->name('categories.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::put('/{id}', 'update')->name('update');
+        Route::delete('/{id}', 'destroy')->name('destroy');
+    });
 
-    Route::get('/borrows', [BorrowController::class, 'index'])->name('borrows.index');
-    Route::get('/borrows/create', [BorrowController::class, 'create'])->name('borrows.create');
-    Route::post('/borrows', [BorrowController::class, 'store'])->name('borrows.store');
-    Route::put('/borrows/{id}', [BorrowController::class, 'update'])->name('borrows.update');
+    Route::controller(BorrowController::class)->prefix('/borrows')->name('borrows.')->group(function () {
+        Route::get('/borrows','index')->name('index');
+        Route::get('/create','create')->name('create');
+        Route::post('/','store')->name('store');
+        Route::put('/{id}','update')->name('update');
+    });
+
+    Route::controller(ProfileController::class)->prefix('/profile')->name('profile.')->group(function () {
+        Route::get('/', 'edit')->name('edit');
+        Route::patch('/', 'update')->name('update');
+        Route::delete('/', 'destroy')->name('destroy');
+    });
 });
 
+// Admin Route
 Route::middleware('auth', 'role:' . UserRole::ADMIN->value)->group(function () {
     Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-    Route::get('/logs', [LogController::class, 'index'])->name('logs.index');
-    Route::delete('/logs', [LogController::class, 'destroyAll'])->name('log.destroyAll');
+
+    Route::controller(LogController::class)->prefix('/logs')->name('logs.')->group(function () {
+        Route::get('/', 'index')->name('index');
+        Route::delete('/', 'destroyAll')->name('destroyAll');
+    });
 });
 
+// Librarian Route
 Route::middleware('auth', 'role:' . UserRole::LIBRARIAN->value)->group(function () {
     Route::get('/librarian/dashboard', [LibrarianDashboardController::class, 'index'])->name('librarian.dashboard');
-});
-
-Route::middleware(['auth', 'role:' . UserRole::LIBRARIAN->value . ',' . UserRole::ADMIN->value])->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';
