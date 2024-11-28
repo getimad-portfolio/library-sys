@@ -46,10 +46,10 @@ Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LI
     });
 
     Route::controller(BorrowController::class)->prefix('/borrows')->name('borrows.')->group(function () {
-        Route::get('/borrows','index')->name('index');
-        Route::get('/create','create')->name('create');
-        Route::post('/','store')->name('store');
-        Route::put('/{id}','update')->name('update');
+        Route::get('/', 'index')->name('index');
+        Route::get('/create', 'create')->name('create');
+        Route::post('/', 'store')->name('store');
+        Route::put('/{id}', 'update')->name('update');
     });
 
     Route::controller(ProfileController::class)->prefix('/profile')->name('profile.')->group(function () {

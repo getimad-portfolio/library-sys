@@ -84,9 +84,7 @@ class BorrowController extends Controller
         
         $book->decrement('stock');
 
-        $borrow = Borrow::create($validationData);
-
-        $book = Book::findOrFail($borrow->book_id);
+        Borrow::create($validationData);
 
         $telegramMessage = new TelegramMessage('Borrow', $book->title, 'Borrow', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
@@ -103,7 +101,7 @@ class BorrowController extends Controller
             'status' => 'required|string'
         ]);
 
-        $borrow = Borrow::findOrFail($id);
+        $borrow = Borrow::findOrFail($id);  // Use this borrow to get the book with it 
         $book = Book::findOrFail($borrow->book_id);
 
         if ($borrow->status != 'borrowed' && $request->status == 'borrowed') {
@@ -114,15 +112,17 @@ class BorrowController extends Controller
         } else if ($borrow->status == 'borrowed' && $request->status != 'borrowed') {
             $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
             $book->increment('stock');
+            
             $telegramMessage = new TelegramMessage('Borrow', $book->title, ucfirst($request->status), Auth::user()->full_name);
             $this->telegramService->sendMessage($telegramMessage);
         } else {
             $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
+            
             $telegramMessage = new TelegramMessage('Borrow', $book->title, ucfirst($request->status), Auth::user()->full_name);
             $this->telegramService->sendMessage($telegramMessage);
         }
 
-        if ($request->isConfirmed) {
+        if ($request->isConfirmed) {            
             $request->validate([
                 'description' => 'nullable|string|max:1000',
                 'rating' => 'nullable|numeric|min:0|max:5',
