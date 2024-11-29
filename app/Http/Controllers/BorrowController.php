@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Classes\TelegramMessage;
 use App\Enums\BorrowStatus;
 use App\Http\Requests\BorrowRequest;
+use App\Http\Requests\ReviewRequest;
 use Illuminate\Http\Request;
 use App\Models\Borrow;
 use App\Models\Member;
@@ -122,14 +123,9 @@ class BorrowController extends Controller
         ]);
     }
 
-    public function addReview(Request $request)
+    public function addReview(ReviewRequest $request)
     {
-        $validationData = $request->validate([
-            'description' => 'nullable|string|max:1000',
-            'rating' => 'nullable|numeric|min:0|max:5',
-            'member_id' => 'required|numeric|exists:members,id',
-            'book_id' => 'required|numeric|exists:books,id'
-        ]);
+        $validationData = $request->validated();
 
         $review = Review::create($validationData);
 
