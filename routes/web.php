@@ -49,7 +49,8 @@ Route::middleware(['auth', 'role:' . UserRole::ADMIN->value . ',' . UserRole::LI
         Route::get('/', 'index')->name('index');
         Route::get('/create', 'create')->name('create');
         Route::post('/', 'store')->name('store');
-        Route::put('/{id}', 'update')->name('update');
+        Route::post('/update', 'update')->name('update');
+        Route::post('/add-review', 'addReview')->name('addReview');
     });
 
     Route::controller(ProfileController::class)->prefix('/profile')->name('profile.')->group(function () {

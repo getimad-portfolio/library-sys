@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\TelegramMessage;
+use App\Enums\BorrowStatus;
 use App\Http\Requests\BorrowRequest;
 use Illuminate\Http\Request;
 use App\Models\Borrow;
@@ -11,6 +12,7 @@ use App\Models\Book;
 use App\Models\Review;
 use App\Services\TelegramNotificationService;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class BorrowController extends Controller
 {
@@ -85,53 +87,56 @@ class BorrowController extends Controller
         $telegramMessage = new TelegramMessage('Borrow', $book->title, 'Borrow', Auth::user()->full_name);
         $this->telegramService->sendMessage($telegramMessage);
         
-        return redirect()->route('borrows.index')->with('success', 'Borrow has been created successfully.');
+        return redirect()->route('borrows.index')->with('success', 'Borrow has been created successfully!');
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
         $request->validate([
-            'status' => 'required|string'
+            'borrow_id' => 'required|exists:borrows,id',
+            'status' => ['required', Rule::notIn(BorrowStatus::BORROWED->value)]
         ]);
 
-        $borrow = Borrow::findOrFail($id);
-        $book = $borrow->book;
+        $borrow = Borrow::findOrFail($request->borrow_id);
 
-        if ($borrow->status != 'borrowed' && $request->status == 'borrowed') {
-            if ($book->stock > 0) {
-                $borrow->update(['status' => $request->status, 'returned_at' => null]);
-                $book->decrement('stock');
-            }
-        } else if ($borrow->status == 'borrowed' && $request->status != 'borrowed') {
-            $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
-            $book->increment('stock');
-            
-            $telegramMessage = new TelegramMessage('Borrow', $book->title, ucfirst($request->status), Auth::user()->full_name);
-            $this->telegramService->sendMessage($telegramMessage);
-        } else {
-            $borrow->update(['status' => $request->status, 'returned_at' => date('Y-m-d')]);
-            
-            $telegramMessage = new TelegramMessage('Borrow', $book->title, ucfirst($request->status), Auth::user()->full_name);
+        if (!$borrow->is_modified) {
+            $borrow->update([
+                'status' => $request->status,
+                'returned_at' => date('Y-m-d'),
+                'is_modified' => true
+            ]);
+
+            $borrow->book->increment('stock');
+
+            $telegramMessage = new TelegramMessage('Borrow', $borrow->book->title, ucfirst($borrow->status), Auth::user()->full_name);
             $this->telegramService->sendMessage($telegramMessage);
         }
 
-        if ($request->isConfirmed) {            
-            $request->validate([
-                'description' => 'nullable|string|max:1000',
-                'rating' => 'nullable|numeric|min:0|max:5',
-            ]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Borrow updated successfully',
+            'data' => $borrow
+        ]);
+    }
 
-            Review::create([
-                'description' => $request->description,
-                'rating' => $request->rating,
-                'book_id' => $borrow->book_id,
-                'member_id' => $borrow->member_id
-            ]);
-        }
+    public function addReview(Request $request)
+    {
+        $validationData = $request->validate([
+            'description' => 'nullable|string|max:1000',
+            'rating' => 'nullable|numeric|min:0|max:5',
+            'member_id' => 'required|numeric|exists:members,id',
+            'book_id' => 'required|numeric|exists:books,id'
+        ]);
 
-        return redirect()->route('borrows.index')->with('success', 'Borrow has been updated successfully.');
+        $review = Review::create($validationData);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Review created successfully',
+            'data' => $review
+        ]);
     }
 }

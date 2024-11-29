@@ -16,11 +16,13 @@ class Borrow extends Model implements Auditable
         'due_date',
         'returned_at',
         'status',
+        'is_modified',
         'member_id',
         'book_id'
     ];
 
     protected $casts = [
+        'is_modified' => 'boolean',
         'borrowed_at' => 'datetime',
         'due_date' => 'datetime',
         'returned_at' => 'datetime',

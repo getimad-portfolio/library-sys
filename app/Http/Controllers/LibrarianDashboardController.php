@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Borrow;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class LibrarianDashboardController extends Controller
