@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Classes\TelegramMessage;
+use App\Http\Requests\BorrowRequest;
 use Illuminate\Http\Request;
 use App\Models\Borrow;
 use App\Models\Member;
@@ -65,14 +66,9 @@ class BorrowController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BorrowRequest $request)
     {
-        $validationData = $request->validate([
-            'member_id' => 'required|exists:members,id',        // Ensures the member exists in the members table
-            'book_id' => 'required|exists:books,id',            // Ensures the book exists in the books table
-            'borrowed_at' => 'required|date|before_or_equal:today', // Ensures it's a valid date not in the future
-            'due_date' => 'required|date|after:borrow_date',    // Ensures it's a valid date and after the borrow_date
-        ]);
+        $validationData = $request->validated();
 
         $book = Book::findOrFail($request->book_id);
 
@@ -101,8 +97,8 @@ class BorrowController extends Controller
             'status' => 'required|string'
         ]);
 
-        $borrow = Borrow::findOrFail($id);  // Use this borrow to get the book with it 
-        $book = Book::findOrFail($borrow->book_id);
+        $borrow = Borrow::findOrFail($id);
+        $book = $borrow->book;
 
         if ($borrow->status != 'borrowed' && $request->status == 'borrowed') {
             if ($book->stock > 0) {
