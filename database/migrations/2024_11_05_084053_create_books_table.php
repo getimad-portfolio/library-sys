@@ -22,7 +22,7 @@ return new class extends Migration
             $table->date("publication_date");
             $table->timestamps();
 
-            $table->foreignId("category_id")->constrained();
+            $table->foreignId("category_id")->constrained()->onDelete("cascade");
         });
     }
 
