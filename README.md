@@ -145,19 +145,6 @@ or:
 ./vendor/bin/phpunit
 ```
 
-## Common Artisan Commands
-
-```bash
-# Clear cached configuration, routes, views, and application cache
-php artisan optimize:clear
-
-# Inspect registered routes
-php artisan route:list
-
-# Run pending migrations
-php artisan migrate
-```
-
 ## Project Structure
 
 ```text
